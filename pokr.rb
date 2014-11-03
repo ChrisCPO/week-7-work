@@ -7,11 +7,13 @@ class Deck
   end
 
   def build 
-    base = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace)
+    ranks = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace)
     suits = %w(Spades Hearts Clubs Diamonds)
     suits.each do |suit|
-      base.each do |card|
-       @deck << (card + " " + suit) 
+      ranks.each do |rank|
+       card ={rank: rank, suit: suit} 
+       @deck << card
+       #@deck << (rank + " " + suit) 
       end
     end
   end
