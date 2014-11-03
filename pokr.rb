@@ -11,11 +11,20 @@ class Deck
     suits = %w(Spades Hearts Clubs Diamonds)
     suits.each do |suit|
       ranks.each do |rank|
-       card ={rank: rank, suit: suit} 
-       @deck << card
+       @deck << Card.new(rank,suit)
+       #card ={rank: rank, suit: suit} 
+       #@deck << card
        #@deck << (rank + " " + suit) 
       end
     end
+  end
+end
+
+class Card
+  attr_reader :rank, :suit
+  def initialize(rank, suit)
+  @rank = rank
+  @suit = suit
   end
 end
 
@@ -24,16 +33,19 @@ class Game
   def initialize(number_of_players=4)
     @players = []
     @deck = Deck.new.deck.shuffle
-
     build_player_list(number_of_players)
   end
-
+    
   def build_player_list(number_of_players)
     hand = []
     number_of_players.times do |num|
       hand = @deck.take(5)
       @players << Player.new("player" + num.to_s, hand)
     end
+  end
+
+  def declare_winner
+    
   end
 end
 
@@ -51,15 +63,13 @@ pokr = Game.new
 pokr.players.each do |player|
   puts ""
   puts player.name
-  puts player.hand
+  player.hand.each do |card|
+    puts card.suit.group_by(suit)
+  end
+  #player.hand.each do |card|
+    #puts card.group_by {|s| s[suit]}
+  #end
+  #puts player.hand.suit.group_by{|s| s[suit]}
 end
-
-
-
-
-
-
-
-
 
 
