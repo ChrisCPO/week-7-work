@@ -10,20 +10,26 @@ class Game
 end
 
 class ActorController
-  attr_accessor :win, :score
+  attr_accessor :win, :score, :cheating
   attr_reader :choice
   def initialize
+    @cheating = false
     @score = 0
     @choice = ""
   end
 
   def win
-    puts "#{self.class}  wins"
     @score =+ 1
+    #puts "#{self.class}  wins"
   end
 end
 
 class PlayerController < ActorController
+  def initialize(game)
+    super()
+    @game = game
+  end
+
   def choose_hand
     puts "choose your hand"
     puts "r/p/s or q to quit"
@@ -34,6 +40,8 @@ class PlayerController < ActorController
         @choice = "paper"
       elsif answer == "s"
         @choice = "scissors"
+      elsif answer == "q"
+        @game.show_scores
       end
     puts "your choice was #{choice}"
   end
@@ -48,9 +56,9 @@ end
 
 class Round
   attr_reader :player, :bot
-  def initialize
-    @player = PlayerController.new
-    @bot = AiController.new
+  def initialize(player,bot)
+    @player = player
+    @bot = bot 
   end
   
   def start
@@ -76,15 +84,42 @@ class Round
     else 
       bot.win
     end 
-     puts player.score
-     puts bot.score
   end
 end
 
+class Game
+  attr_reader :player, :bot
+  def initialize
+    @player = PlayerController.new(self)
+    @bot = AiController.new
+  end
+  
+  def start 
+    @round = Round.new(@player, @bot)
+    @round.start
+    @round.determine_victor
+  end
 
-testround = Round.new
-testround.start
-testround.determine_victor
+  def show_scores
+      puts player.score.class
+       puts "player points #{player.score}"
+       puts "bot points #{bot.score}"
+       puts "---------------------"
+     if player.cheating == true || bot.cheating == true
+       #then cheating player wins 
+     elsif player.score > bot.score
+       puts "player wins #{player.score}"
+     elsif player.score < bot.score
+       puts "bot wins #{bot.score}"
+     elsif player.score == bot.score
+       puts "game was a tie"
+     else
+     end
+  end
+end
 
+game = Game.new
+game.start
+game.show_scores
 
 
