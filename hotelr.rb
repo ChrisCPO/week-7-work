@@ -1,30 +1,45 @@
 require 'csv'
-
+require './hotel.rb'
 
 class Main
+  attr_accessor :hotel_collection
+  attr_reader :search_headers
   def initialize
     hotels = CSV.read("hotels.csv")
-    puts hotels.size
-    search_headers = hotels.shift
 
-    @hotel_collection = []
-    hotels.map.with_index do |info,index| index = +1
-      @hotel_collection << Hotel.new(hotels[index])
+    @search_headers = hotels.shift
+
+    @hotel_collection = hotels.map.with_index do |info,index|
+      Hotel.new(hotels[index])
     end
 
-    puts @hotel_collection.inspect
+  end
+  
+  def search
+    puts "search by"
+    @search_headers.each do |title|
+      print title + " | " 
+    end
+    puts "enter seach query >"
+    @query = gets.chomp
+    review
   end
 
+  def review
+    hotel_collection.each do |info|
+      match?(info)
+    end
+  end
+
+  def match?(info)
+    @query == info
+    
+  end
 end
 
 
 
-class Hotel
-  attr_reader :properties
-  def initialize(properties)
-    @properties = properties
-  end
-end
 
 
 hotelsdb = Main.new
+hotelsdb.search
