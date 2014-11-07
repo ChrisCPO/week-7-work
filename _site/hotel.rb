@@ -4,13 +4,13 @@ class Hotel
               :phone_number,
               :single_rooms,
               :double_rooms
-  )
+               )
   def initialize(info)
     @name = info["Hotel"].strip
     @location = info["City"].strip
-    @phone_number = phone_number_format(info["Phone Number"])
-    @single_rooms = clean_number(info["Number of Singles"])
-    @double_rooms = clean_number(info["Number of Doubles"])
+    @phone_number = info["Phone Number"]
+    @single_rooms = info["Number of Singles"].strip.gsub(",","").to_i
+    @double_rooms = info["Number of Doubles"].strip.gsub(",","").to_i
   end
 
   def to_s
@@ -24,14 +24,5 @@ class Hotel
 
   def total_rooms
     single_rooms + double_rooms
-  end
-
-  def phone_number_format(number)
-    number = clean_number(number).to_s
-    number.insert(3,"-").insert(7,"-")
-  end
-
-  def clean_number(number)
-    number.strip.gsub(/[^\d+]/, "").strip.to_i
   end
 end
