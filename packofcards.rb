@@ -5,8 +5,8 @@ class Card
     @rank = rank
   end
 
-  def show
-    puts @suit + @rank.to_s
+  def to_s
+    puts "#{suit}#{rank}"
   end
 end
 
@@ -15,7 +15,7 @@ class Deck
   def build
     @cards = []
     ranks = %w(1 2 3 4 5 6 7 8 9 10 11 12 13)
-    suits = %w(S H D C)
+    suits = %w(H H H H)
 
     suits.each do |suit|
       ranks.each do |rank|

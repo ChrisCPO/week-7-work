@@ -15,6 +15,7 @@ class PokerGame
     players = deal_cards
     determine_hand = HandCaculator.new(players)
     determine_hand.start
+    reveal_hands
   end
 
   def deal_cards
@@ -25,8 +26,11 @@ class PokerGame
   def create_players
     number_of_players.times  { |index| players << Player.new(index) }
   end
-end
 
+  def reveal_hands
+    players.each  { |player| puts player.show_hand }
+  end
+end
 
 class HandCaculator
   attr_reader :players
@@ -36,26 +40,35 @@ class HandCaculator
 
   def start
     players.each do |player|
-      player.show_cards
-      # if player.cards == OnePair.new(player)
-      # end
+      Flush.new(player)
+    end
+  end
+end
+
+class Flush
+  attr_reader :cards, :player, :results
+  def initialize(player)
+    @player = player
+    @cards = player.cards
+    @results = []
+    determine
+  end
+
+  def determine
+    cards.each { |card| results << card.suit }
+    results.uniq!
+    if results.length == 1
+      player.hand = "Flush"
     end
   end
 end
 
 class OnePair
-  # i dont know what do to i have an array of cards per player but i cant call
-  # .uniq on cards.uniq .rank
-  attr_reader :cards, cards_ranks
+  attr_reader :cards
   def initialize(player)
     @cards = player.cards
     list_ranks
     determine
-  end
-
-  def list_ranks
-    cards_ranks = []
-    cards.each {|card| card.rank}
   end
 
   def determine

@@ -1,15 +1,22 @@
 class Player
   attr_reader :name
-  attr_accessor :cards
+  attr_accessor :cards, :hand
   def initialize(index)
     @cards = Array.new
     @name = give_player_name(index)
+    @hand = ""
   end
 
   def show_cards
     cards.each do |card|
-      card.show
+      card.to_s
     end
+  end
+
+  def show_hand
+    puts name
+    show_cards
+    puts hand
   end
 
   private
