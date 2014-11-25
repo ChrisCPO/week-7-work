@@ -1,11 +1,12 @@
 class Card
+  attr_reader :rank, :suit
   def initialize(suit, rank)
     @suit = suit
     @rank = rank
   end
 
   def show
-    puts @suit + @rank
+    puts @suit + @rank.to_s
   end
 end
 
@@ -16,9 +17,9 @@ class Deck
     ranks = %w(1 2 3 4 5 6 7 8 9 10 11 12 13)
     suits = %w(S H D C)
 
-    suits.each do |rank|
-      ranks.each do |suit|
-        cards << Card.new(suit,rank)
+    suits.each do |suit|
+      ranks.each do |rank|
+        cards << Card.new(suit,rank.to_i)
       end
     end
   end

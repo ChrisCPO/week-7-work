@@ -14,7 +14,7 @@ class PokerGame
     create_players
     players = deal_cards
     determine_hand = HandCaculator.new(players)
-    determine_hand.show
+    determine_hand.start
   end
 
   def deal_cards
@@ -35,23 +35,32 @@ class HandCaculator
   end
 
   def start
-    players.each |player|
-    if player.cards == OnePair.new(player)
+    players.each do |player|
+      player.show_cards
+      # if player.cards == OnePair.new(player)
+      # end
     end
   end
 end
 
 class OnePair
-  attr_reader :deck
+  # i dont know what do to i have an array of cards per player but i cant call
+  # .uniq on cards.uniq .rank
+  attr_reader :cards, cards_ranks
   def initialize(player)
     @cards = player.cards
-    figure
-    @deck = Deck.new
+    list_ranks
+    determine
   end
 
-  def figure
-    cards.each do |card|
-      card.rank
+  def list_ranks
+    cards_ranks = []
+    cards.each {|card| card.rank}
+  end
+
+  def determine
+    results = cards.uniq
+    puts results
   end
 end
 

@@ -9,7 +9,7 @@ class Dealer
   def deal(players)
       5.times do
         players.each do |player|
-          player.cards << deck.cards.pop
+          player.cards << deck.cards.shift
       end
     end
       players
